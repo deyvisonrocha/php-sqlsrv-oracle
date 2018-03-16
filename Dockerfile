@@ -1,0 +1,93 @@
+FROM php:7.1-fpm
+
+# Get repository and install wget and vim
+RUN apt-get update && apt-get install -y \
+    wget \
+    vim \
+    git \
+    unzip \
+    apt-utils \
+    software-properties-common \
+    python-software-properties \
+    apt-transport-https
+
+RUN echo "--> Installing Yarn and NodeJS" && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    curl -sL https://deb.nodesource.com/setup_9.x | bash - && \
+    apt-get install --no-install-recommends -y nodejs yarn
+
+# Install Oracle Instantclient
+RUN mkdir /opt/oracle \
+    && cd /opt/oracle \
+    && wget https://github.com/bumpx/oracle-instantclient/raw/master/instantclient-basic-linux.x64-12.2.0.1.0.zip \
+    && wget https://github.com/bumpx/oracle-instantclient/raw/master/instantclient-sdk-linux.x64-12.2.0.1.0.zip  \
+    && unzip /opt/oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && unzip /opt/oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip  -d /opt/oracle \
+    && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.1 /opt/oracle/instantclient_12_2/libclntsh.so \
+    && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.1 /opt/oracle/instantclient_12_2/libclntshcore.so \
+    && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.1 /opt/oracle/instantclient_12_2/libocci.so \
+    && rm -rf /opt/oracle/*.zip
+
+# Install PHP extensions deps
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    libpng12-dev \
+    zlib1g-dev \
+    libicu-dev \
+    g++ \
+    unixodbc-dev \
+    libxml2-dev \
+    libaio-dev \
+    libmemcached-dev \
+    freetds-dev \
+	libssl-dev \
+	openssl
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- \
+        --install-dir=/usr/local/bin \
+        --filename=composer
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && echo 'instantclient,/opt/oracle/instantclient_12_2' | pecl install oci8 \
+    && docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_12_2,12.2
+RUN pecl install sqlsrv \
+    && pecl install pdo_sqlsrv \
+    && pecl install redis \
+    && pecl install memcached \
+    && pecl install apcu \
+    && pecl install apcu_bc-1.0.3
+
+RUN docker-php-ext-install \
+            iconv \
+            mbstring \
+            intl \
+            mcrypt \
+            gd \
+            pdo_oci \
+            soap \
+            sockets \
+            zip \
+            pcntl \
+            ftp \
+    && docker-php-ext-enable \
+            oci8 \
+            sqlsrv \
+            pdo_sqlsrv \
+            redis \
+            memcached \
+            opcache \
+            apcu --ini-name 10-docker-php-ext-apcu.ini \
+            apc --ini-name 20-docker-php-ext-apc.ini
+
+# Clean repository
+RUN apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+EXPOSE 9000
