@@ -1,5 +1,7 @@
 FROM php:7.1-fpm
 
+ENV ACCEPT_EULA=Y
+
 # Get repository and install wget and vim
 RUN apt-get update && apt-get install -y \
     wget \
@@ -9,8 +11,18 @@ RUN apt-get update && apt-get install -y \
     apt-utils \
     software-properties-common \
     python-software-properties \
-    apt-transport-https
+    apt-transport-https \
+    locales
 
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+    && locales-gen
+
+# Microsoft SQL Server Prerequisites
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/8/prod.list \
+        > /etc/apt/sources.list.d/mssql-release.list
+
+# NodeJS & Yarn 
 RUN echo "--> Installing Yarn and NodeJS" && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
@@ -40,6 +52,8 @@ RUN apt-get update \
     libicu-dev \
     g++ \
     unixodbc-dev \
+    msodbcsql \
+    mssql-tools \
     libxml2-dev \
     libaio-dev \
     libmemcached-dev \
