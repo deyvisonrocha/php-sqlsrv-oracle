@@ -11,11 +11,7 @@ RUN apt-get update && apt-get install -y \
     apt-utils \
     software-properties-common \
     python-software-properties \
-    apt-transport-https \
-    locales
-
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
-    && locales-gen
+    apt-transport-https
 
 # Microsoft SQL Server Prerequisites
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
@@ -103,5 +99,8 @@ RUN docker-php-ext-install \
 RUN apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Added mssql-tools bin
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 
 EXPOSE 9000
