@@ -71,7 +71,8 @@ RUN pecl install sqlsrv \
     && pecl install redis \
     && pecl install memcached \
     && pecl install apcu \
-    && pecl install apcu_bc-1.0.3
+    && pecl install apcu_bc-1.0.3 \
+    && pecl install xdebug
 
 RUN docker-php-ext-install \
             iconv \
@@ -93,7 +94,8 @@ RUN docker-php-ext-install \
             memcached \
             opcache \
             apcu --ini-name 10-docker-php-ext-apcu.ini \
-            apc --ini-name 20-docker-php-ext-apc.ini
+            apc --ini-name 20-docker-php-ext-apc.ini \
+            xdebug
 
 # Clean repository
 RUN apt-get autoremove -y && \
