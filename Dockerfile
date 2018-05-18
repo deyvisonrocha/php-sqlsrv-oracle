@@ -97,13 +97,6 @@ RUN docker-php-ext-install \
             apc --ini-name 20-docker-php-ext-apc.ini \
             xdebug
 
-# Configure XDEBUG
-RUN echo 'xdebug.remote_port=9000' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo 'xdebug.remote_enable=1' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo 'xdebug.remote_connect_back=1' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo 'xdebug.remote_autostart=1' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo 'xdebug.idekey = VSCODE' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
 # Clean repository
 RUN apt-get autoremove -y && \
     apt-get clean && \
