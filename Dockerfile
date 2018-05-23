@@ -18,7 +18,7 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
     && curl https://packages.microsoft.com/config/debian/8/prod.list \
         > /etc/apt/sources.list.d/mssql-release.list
 
-# NodeJS & Yarn 
+# NodeJS & Yarn
 RUN echo "--> Installing Yarn and NodeJS" && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
@@ -96,6 +96,10 @@ RUN docker-php-ext-install \
             apcu --ini-name 10-docker-php-ext-apcu.ini \
             apc --ini-name 20-docker-php-ext-apc.ini \
             xdebug
+
+# FreeTDS
+COPY ./freetds/freetds.conf /etc/freetds/freetds.conf
+COPY ./freetds/locales.conf /etc/freetds/locales.conf
 
 # Clean repository
 RUN apt-get autoremove -y && \
