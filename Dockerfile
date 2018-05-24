@@ -3,7 +3,8 @@ FROM php:7.1-fpm
 ENV ACCEPT_EULA=Y
 
 # Get repository and install wget and vim
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y apt-transport-https
+RUN apt-get install -y \
     wget \
     vim \
     git \
@@ -11,7 +12,6 @@ RUN apt-get update && apt-get install -y \
     apt-utils \
     software-properties-common \
     python-software-properties \
-    apt-transport-https \
     libsqlite3-dev \
     libsqlite3-0
 
