@@ -55,7 +55,9 @@ RUN apt-get update \
     libmemcached-dev \
     freetds-dev \
 	libssl-dev \
-	openssl
+	openssl \
+    libsqlite3-dev \
+    libsqlite3-0
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
@@ -84,6 +86,7 @@ RUN docker-php-ext-install \
             soap \
             sockets \
             zip \
+            pdo_sqlite \
             pcntl \
             ftp \
     && docker-php-ext-enable \
@@ -91,6 +94,7 @@ RUN docker-php-ext-install \
             sqlsrv \
             pdo_sqlsrv \
             redis \
+            pdo_sqlite \
             memcached \
             opcache \
             apcu --ini-name 10-docker-php-ext-apcu.ini \
