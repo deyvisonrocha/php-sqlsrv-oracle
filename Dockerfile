@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y \
     apt-utils \
     software-properties-common \
     python-software-properties \
-    apt-transport-https
+    apt-transport-https \
+    libsqlite3-dev \
+    libsqlite3-0
 
 # Microsoft SQL Server Prerequisites
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
@@ -55,9 +57,7 @@ RUN apt-get update \
     libmemcached-dev \
     freetds-dev \
 	libssl-dev \
-	openssl \
-    libsqlite3-dev \
-    libsqlite3-0
+	openssl
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
