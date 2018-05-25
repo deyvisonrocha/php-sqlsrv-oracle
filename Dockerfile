@@ -3,8 +3,7 @@ FROM php:7.1-fpm
 ENV ACCEPT_EULA=Y
 
 # Get repository and install wget and vim
-RUN apt-get update && apt-get install -y apt-transport-https
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     wget \
     vim \
     git \
@@ -12,8 +11,7 @@ RUN apt-get install -y \
     apt-utils \
     software-properties-common \
     python-software-properties \
-    libsqlite3-dev \
-    libsqlite3-0
+    apt-transport-https
 
 # Microsoft SQL Server Prerequisites
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
@@ -56,8 +54,9 @@ RUN apt-get update \
     libaio-dev \
     libmemcached-dev \
     freetds-dev \
-	libssl-dev \
-	openssl
+    libssl-dev \
+    openssl
+RUN apt-get install libsqlite3-0 libsqlite3-dev -y
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
@@ -73,8 +72,7 @@ RUN pecl install sqlsrv \
     && pecl install redis \
     && pecl install memcached \
     && pecl install apcu \
-    && pecl install apcu_bc-1.0.3 \
-    && pecl install xdebug
+    && pecl install apcu_bc-1.0.3
 
 RUN docker-php-ext-install \
             iconv \
@@ -86,20 +84,18 @@ RUN docker-php-ext-install \
             soap \
             sockets \
             zip \
-            pdo_sqlite \
             pcntl \
             ftp \
+            pdo_sqlite
     && docker-php-ext-enable \
             oci8 \
             sqlsrv \
             pdo_sqlsrv \
             redis \
-            pdo_sqlite \
             memcached \
             opcache \
             apcu --ini-name 10-docker-php-ext-apcu.ini \
-            apc --ini-name 20-docker-php-ext-apc.ini \
-            xdebug
+            apc --ini-name 20-docker-php-ext-apc.ini
 
 # FreeTDS
 COPY ./freetds/freetds.conf /etc/freetds/freetds.conf
