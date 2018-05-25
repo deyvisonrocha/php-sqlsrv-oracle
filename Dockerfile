@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https
 
 # Microsoft SQL Server Prerequisites
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+RUN wget -qO - https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
     && curl https://packages.microsoft.com/config/debian/8/prod.list \
         > /etc/apt/sources.list.d/mssql-release.list
 
