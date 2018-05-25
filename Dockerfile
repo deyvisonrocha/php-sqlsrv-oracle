@@ -1,6 +1,7 @@
 FROM php:7.1-fpm
 
 ENV ACCEPT_EULA=Y
+ENV DEBIAN_FRONTED=noninteractive
 
 # Get repository and install wget and vim
 RUN apt-get update && apt-get install -y \
