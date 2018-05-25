@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     vim \
     git \
+    curl \
     unzip \
     apt-utils \
     software-properties-common \
