@@ -86,7 +86,7 @@ RUN docker-php-ext-install \
             zip \
             pcntl \
             ftp \
-            pdo_sqlite
+            pdo_sqlite \
     && docker-php-ext-enable \
             oci8 \
             sqlsrv \
