@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     apt-utils \
     software-properties-common \
-    python-software-properties \
     apt-transport-https
 
 # Microsoft SQL Server Prerequisites
