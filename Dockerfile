@@ -9,13 +9,14 @@ RUN apt-get update && apt-get install -y \
     vim \
     git \
     unzip \
+    curl \
     apt-utils \
     software-properties-common \
     apt-transport-https
 
 # Microsoft SQL Server Prerequisites
 RUN wget -qO - https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/8/prod.list \
+    && wget -qO - https://packages.microsoft.com/config/debian/8/prod.list \
         > /etc/apt/sources.list.d/mssql-release.list
 
 # NodeJS & Yarn
