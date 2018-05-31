@@ -90,13 +90,11 @@ RUN docker-php-ext-install \
             mysqli \
             pdo \
             pdo_mysql \
-            pdo_dblib \
     && docker-php-ext-enable \
             oci8 \
             sqlsrv \
             pdo_sqlsrv \
             pdo_mysql \
-            pdo_dblib \
             redis \
             memcached \
             opcache \
