@@ -50,7 +50,7 @@ RUN apt-get update \
     libicu-dev \
     g++ \
     unixodbc-dev \
-    msodbcsql \
+    msodbcsql17 \
     mssql-tools \
     libxml2-dev \
     libaio-dev \
