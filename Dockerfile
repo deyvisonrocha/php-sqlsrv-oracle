@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     apt-utils \
+    gnupg \
     software-properties-common \
     apt-transport-https
 
