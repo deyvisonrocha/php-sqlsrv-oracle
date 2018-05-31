@@ -2,6 +2,8 @@ FROM php:7.1-fpm
 
 ENV ACCEPT_EULA=Y
 ENV DEBIAN_FRONTED=noninteractive
+ENV ORACLE_HOME=/opt/oracle/instantclient_12_2/
+ENV LD_LIBRARY_PATH=/opt/oracle/instantclient_12_2/
 
 # Get repository and install wget and vim
 RUN apt-get update && apt-get install -y \
