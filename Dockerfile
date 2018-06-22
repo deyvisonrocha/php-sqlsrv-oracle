@@ -59,7 +59,8 @@ RUN apt-get update \
     libmemcached-dev \
     freetds-dev \
     libssl-dev \
-    openssl
+    openssl \
+    supervisor
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
