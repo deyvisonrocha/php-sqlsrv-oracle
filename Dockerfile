@@ -113,6 +113,9 @@ RUN apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Permissions
+RUN chown -R www-data:www-data /var/www
+
 # Added mssql-tools bin
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 
